@@ -7,6 +7,9 @@ from checker_unchecked_calls import *
 from checker_visibility import *
 from checker_send_transfer import *
 from checker_txorigin import *
+from checker_block_values import *
+from checker_Right_To_Left_Override import *
+from checker_unused_variable import *
 
 default_colors = {
     "safe": Fore.LIGHTGREEN_EX,
@@ -14,6 +17,30 @@ default_colors = {
     "result": Fore.LIGHTYELLOW_EX,
     "c_name": Fore.LIGHTBLUE_EX
 }
+
+
+def unused_variable(ast):
+    result = find_unused_variable(ast)
+    if result:
+        print(
+            default_colors[
+                "warning"] + "SWC-131 Variaveis não utilizadas encontrado no código:" + Style.RESET_ALL)
+        print(default_colors["result"] + str(result) + Style.RESET_ALL)
+        return True
+    else:
+        return False
+
+
+def right_to_left_override(ast):
+    result = find_rtl_override_control_character(ast)
+    if result:
+        print(
+            default_colors[
+                "warning"] + "SWC-130 Right-To-Left-Override control character (U+202E) encontrado no código:" + Style.RESET_ALL)
+        print(default_colors["result"] + r"\u202E" + Style.RESET_ALL)
+        return True
+    else:
+        return False
 
 
 def visibility(ast):
@@ -50,6 +77,20 @@ def tx_origin(ast):
         result = ', '.join(list_str)
         print(
             default_colors["warning"] + "SWC-115 Tx.Origin utilizado no contexto errado:" + Style.RESET_ALL)
+        print(default_colors["result"] + str(result) + Style.RESET_ALL)
+        return True
+    else:
+        return False
+
+
+def block_values(ast):
+    result = find_block_properties(ast)
+    if len(result) > 0:
+        list_str = list(map(str, result))
+        result = ', '.join(list_str)
+        print(
+            default_colors[
+                "warning"] + "SWC-116 As funcionalidades são dependentes de tempos de blocos:" + Style.RESET_ALL)
         print(default_colors["result"] + str(result) + Style.RESET_ALL)
         return True
     else:
@@ -94,13 +135,17 @@ def unchecked_calls(ast):
 
 
 def verify_all(ast):
-    find = 1 if visibility(ast) or deprecated_functions(ast)\
-                or unchecked_calls(ast) or transfer_or_send(ast) or tx_origin(ast) else 0
-    if find == 1:
+    verifications = [visibility, deprecated_functions, unchecked_calls,
+                     transfer_or_send, tx_origin, block_values, right_to_left_override, unused_variable]
+    find = False
+    for verify in verifications:
+        result = verify(ast)
+        if result:
+            find = True
+    if find:
         return True
     else:
         return False
-
 
 
 if __name__ == "__main__":
