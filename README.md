@@ -46,12 +46,28 @@ O ASTSecurer é um programa desenvolvido em Python que permite detectar vulnerab
 
 6. Após a conclusão da análise, o programa irá exibir as vulnerabilidades detectadas, bem como informações relevantes sobre cada uma delas.
 
-## Contribuição
 
-As contribuições para aprimorar o ASTSecurer são bem-vindas! Caso você queira adicionar novas vulnerabilidades ou melhorar a detecção existente, sinta-se à vontade para enviar um pull request.
+## Vulnerabilidades detectadas
+
+| Código da Vulnerabilidade | Nome da Vulnerabilidade                  |
+|--------------------------|-----------------------------------------|
+| SWC-100                  | Function Default Visibility            |
+| SWC-102                  | Outdated Compiler Version              |
+| SWC-104                  | Unchecked Call Return Value            |
+| SWC-108                  | State Variable Default Visibility      |
+| SWC-111                  | Use of Deprecated Solidity Functions   |
+| SWC-115                  | Authorization through tx.origin        |
+| SWC-116                  | Block values as a proxy for time       |
+| SWC-127                  | Arbitrary Jump with Function Type      |
+| SWC-130                  | Right-To-Left-Override control char    |
+| SWC-131                  | Presence of unused variables           |
+| SWC-134                  | Message call with hardcoded gas amount |
+
+Esses códigos e nomes de vulnerabilidades correspondem à lista de vulnerabilidades disponível no site [SWC Registry](https://swcregistry.io) que classifica e documenta as vulnerabilidades comuns em contratos inteligentes.
+
 
 ## Limitações
 
-- O ASTSecurer ainda está em desenvolvimento e pode não cobrir todas as vulnerabilidades existentes em contratos em Solidity.
+- O ASTSecurer não cobre todas as vulnerabilidades existentes em contratos em Solidity apenas as quais são possiveis a detectão atraves de uma analise semântica.
 - A detecção de vulnerabilidades é baseada em padrões e comportamentos suspeitos, mas nem todos os casos podem ser detectados com 100% de precisão.
 - É recomendável usar o ASTSecurer como uma ferramenta complementar à revisão manual dos contratos e a outras ferramentas de segurança.
