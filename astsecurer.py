@@ -2,15 +2,15 @@ import os
 import sys
 from colorama import Fore, Style
 from abstract_tree.ast_generator import *
-from vulnerabilities.checker_code_version import *
-from vulnerabilities.checker_depreciated import *
-from vulnerabilities.checker_unchecked_calls import *
-from vulnerabilities.checker_visibility import *
-from vulnerabilities.checker_send_transfer import *
-from vulnerabilities.checker_txorigin import *
-from vulnerabilities.checker_block_values import *
-from vulnerabilities.checker_Right_To_Left_Override import *
-from vulnerabilities.checker_unused_variable import *
+from vulnerabilities.code_version_checker import *
+from vulnerabilities.depreciated_checker import *
+from vulnerabilities.unchecked_calls_checker import *
+from vulnerabilities.visibility_checker import *
+from vulnerabilities.send_transfer_checker import *
+from vulnerabilities.txorigin_checker import *
+from vulnerabilities.block_values_checker import *
+from vulnerabilities.Right_To_Left_Override_checker import *
+from vulnerabilities.unused_variable_checker import *
 
 default_colors = {
     "safe": Fore.LIGHTGREEN_EX,

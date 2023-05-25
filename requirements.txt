@@ -1,0 +1,2 @@
+colorama==0.4.6
+solidity_parser==0.1.1
