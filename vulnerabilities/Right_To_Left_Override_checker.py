@@ -6,8 +6,11 @@ def find_rtl_override_control_character(node):
     if isinstance(node, dict):
         if node.get("initialValue") is not None:
             if node.get("initialValue").get("value") is not None:
-                if re.search(r"\\u202E", node.get("initialValue").get("value")):
-                    return True
+                try:
+                    if re.search(r"\\u202E", node.get("initialValue").get("value")):
+                        return True
+                except:
+                    pass
         for child_node in node.values():
            if find_rtl_override_control_character(child_node):
                return True
