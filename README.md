@@ -19,7 +19,7 @@ O ASTSecurer é um programa desenvolvido em Python que permite detectar vulnerab
 1. Clone este repositório para o seu ambiente local:
 
    ```shell
-   git clone https://github.com/seu-usuario/ASTSecurer.git
+   git clone https://github.com/eduardovbe/AST_Vulnerabities_Checker
    ```
 
 2. Acesse o diretório do projeto:
