@@ -1,15 +1,16 @@
 import os
+import sys
 from colorama import Fore, Style
-from ast_generator import *
-from checker_code_version import *
-from checker_depreciated import *
-from checker_unchecked_calls import *
-from checker_visibility import *
-from checker_send_transfer import *
-from checker_txorigin import *
-from checker_block_values import *
-from checker_Right_To_Left_Override import *
-from checker_unused_variable import *
+from abstract_tree.ast_generator import *
+from vulnerabilities.checker_code_version import *
+from vulnerabilities.checker_depreciated import *
+from vulnerabilities.checker_unchecked_calls import *
+from vulnerabilities.checker_visibility import *
+from vulnerabilities.checker_send_transfer import *
+from vulnerabilities.checker_txorigin import *
+from vulnerabilities.checker_block_values import *
+from vulnerabilities.checker_Right_To_Left_Override import *
+from vulnerabilities.checker_unused_variable import *
 
 default_colors = {
     "safe": Fore.LIGHTGREEN_EX,
@@ -113,7 +114,8 @@ def transfer_or_send(ast):
     if len(result) > 0:
         list_str = list(map(str, result))
         result = ', '.join(list_str)
-        print(default_colors["warning"] + "SWC-134 Foram encontrados send() ou transfer() no código:" + Style.RESET_ALL)
+        print(default_colors["warning"] + "SWC-134 Foram encontrados send() ou transfer() no código que podem "
+                                          "ocasionar vulnerabilidades:" + Style.RESET_ALL)
         print(default_colors["result"] + str(result) + Style.RESET_ALL)
         return True
     else:
@@ -149,13 +151,17 @@ def verify_all(ast):
 
 
 if __name__ == "__main__":
-    path = 'teste/'
+    if len(sys.argv) < 2:
+        print("É necessário fornecer o diretório do dataset como argumento.")
+        exit()
+    path = sys.argv[1]
     arquivos = []
     for nome_arquivo in os.listdir(path):
         if os.path.isfile(os.path.join(path, nome_arquivo)):
-            arquivos.append(nome_arquivo)
+            if nome_arquivo.endswith(".sol"):
+                arquivos.append(nome_arquivo)
     for arq in arquivos:
-        SOLIDITY_FILE_PATH = path + arq
+        SOLIDITY_FILE_PATH = path +"/"+ arq
         ast = open_file_and_save(SOLIDITY_FILE_PATH)
         print(default_colors["c_name"] + arq + Style.RESET_ALL)
         not_safe = verify_all(ast)

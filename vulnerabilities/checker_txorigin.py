@@ -1,8 +1,8 @@
 import json
-from ast_generator import *
+from ast.ast_generator import *
 
 def ast_load():
-    with open('ast.json', 'r') as f:
+    with open('../abstract_tree/ast.json', 'r') as f:
         data = f.read()
     return json.loads(data)
 
