@@ -46,29 +46,31 @@ def right_to_left_override(ast):
 
 def visibility(ast):
     result = find_default_visibilities(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(
-            default_colors[
-                "warning"] + "SWC-100/SWC-108 Foram encontrados as seguintes funções e variveis sem visibilidade declarada:" + Style.RESET_ALL)
-        print(default_colors["result"] + str(result) + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(
+                default_colors[
+                    "warning"] + "SWC-100/SWC-108 Foram encontrados as seguintes funções e variveis sem visibilidade declarada:" + Style.RESET_ALL)
+            print(default_colors["result"] + str(result) + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def deprecated_functions(ast):
     result = find_deprecated_functions(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(
-            default_colors["warning"] + "SWC-111 Foram encontrados as seguintes funções depreciadas:" + Style.RESET_ALL)
-        print(default_colors["result"] + str(result) + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(
+                default_colors["warning"] + "SWC-111 Foram encontrados as seguintes funções depreciadas:" + Style.RESET_ALL)
+            print(default_colors["result"] + str(result) + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def tx_origin(ast):
@@ -87,54 +89,58 @@ def tx_origin(ast):
 
 def block_values(ast):
     result = find_block_properties(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(
-            default_colors[
-                "warning"] + "SWC-116 As funcionalidades são dependentes de tempos de blocos:" + Style.RESET_ALL)
-        print(default_colors["result"] + str(result) + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(
+                default_colors[
+                    "warning"] + "SWC-116 As funcionalidades são dependentes de tempos de blocos:" + Style.RESET_ALL)
+            print(default_colors["result"] + str(result) + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def old_version(ast):
     result = find_old_version(ast)
-    if len(result) > 0:
-        print(
-            default_colors["warning"] + "SWC-102 O código funciona em uma versão do solidity antiga" + Style.RESET_ALL)
-        print(default_colors["result"] + f"Versão =  {result}" + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            print(
+                default_colors["warning"] + "SWC-102 O código funciona em uma versão do solidity antiga" + Style.RESET_ALL)
+            print(default_colors["result"] + f"Versão =  {result}" + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def assembly_code(ast):
     result = find_assembly(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(default_colors["warning"] + "SWC-127 Foram encontrados código em assembly no código que podem "
-                                          "ocasionar vulnerabilidades:" + Style.RESET_ALL)
-        print(default_colors["result"] + str(result) + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(default_colors["warning"] + "SWC-127 Foram encontrados código em assembly no código que podem "
+                                              "ocasionar vulnerabilidades:" + Style.RESET_ALL)
+            print(default_colors["result"] + str(result) + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def unchecked_calls(ast):
     result = find_unchecked_calls(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(
-            default_colors[
-                "warning"] + "SWC-104 Foram encontrados valores de retorno de chamada sem controle:" + Style.RESET_ALL)
-        print(default_colors["result"] + result + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(
+                default_colors[
+                    "warning"] + "SWC-104 Foram encontrados valores de retorno de chamada sem controle:" + Style.RESET_ALL)
+            print(default_colors["result"] + result + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def verify_all(ast):
@@ -163,7 +169,11 @@ if __name__ == "__main__":
                 arquivos.append(nome_arquivo)
     for arq in arquivos:
         SOLIDITY_FILE_PATH = path +"/"+ arq
-        ast = open_file_and_save(SOLIDITY_FILE_PATH)
+        try:
+            ast = open_file_and_save(SOLIDITY_FILE_PATH)
+        except:
+            print(default_colors["warning"] + "Erro ao abrir o contrato" + arq + Style.RESET_ALL)
+            continue
         print(default_colors["c_name"] + arq + Style.RESET_ALL)
         not_safe = verify_all(ast)
         if not not_safe:
