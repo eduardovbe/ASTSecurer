@@ -6,7 +6,7 @@ from vulnerabilities.code_version_checker import *
 from vulnerabilities.depreciated_checker import *
 from vulnerabilities.unchecked_calls_checker import *
 from vulnerabilities.visibility_checker import *
-from vulnerabilities.send_transfer_checker import *
+from vulnerabilities.assembly_code_checker import *
 from vulnerabilities.txorigin_checker import *
 from vulnerabilities.block_values_checker import *
 from vulnerabilities.Right_To_Left_Override_checker import *
@@ -73,15 +73,16 @@ def deprecated_functions(ast):
 
 def tx_origin(ast):
     result = find_tx_origin(ast)
-    if len(result) > 0:
-        list_str = list(map(str, result))
-        result = ', '.join(list_str)
-        print(
-            default_colors["warning"] + "SWC-115 Tx.Origin utilizado no contexto errado:" + Style.RESET_ALL)
-        print(default_colors["result"] + str(result) + Style.RESET_ALL)
-        return True
-    else:
-        return False
+    if result is not None:
+        if len(result) > 0:
+            list_str = list(map(str, result))
+            result = ', '.join(list_str)
+            print(
+                default_colors["warning"] + "SWC-115 Tx.Origin utilizado no contexto errado:" + Style.RESET_ALL)
+            print(default_colors["result"] + str(result) + Style.RESET_ALL)
+            return True
+        else:
+            return False
 
 
 def block_values(ast):
@@ -109,12 +110,12 @@ def old_version(ast):
         return False
 
 
-def transfer_or_send(ast):
-    result = find_transfer_or_send(ast)
+def assembly_code(ast):
+    result = find_assembly(ast)
     if len(result) > 0:
         list_str = list(map(str, result))
         result = ', '.join(list_str)
-        print(default_colors["warning"] + "SWC-134 Foram encontrados send() ou transfer() no código que podem "
+        print(default_colors["warning"] + "SWC-127 Foram encontrados código em assembly no código que podem "
                                           "ocasionar vulnerabilidades:" + Style.RESET_ALL)
         print(default_colors["result"] + str(result) + Style.RESET_ALL)
         return True
@@ -138,7 +139,7 @@ def unchecked_calls(ast):
 
 def verify_all(ast):
     verifications = [visibility, deprecated_functions, unchecked_calls,
-                     transfer_or_send, tx_origin, block_values, right_to_left_override, unused_variable]
+                     assembly_code, tx_origin, block_values, right_to_left_override, unused_variable]
     find = False
     for verify in verifications:
         result = verify(ast)

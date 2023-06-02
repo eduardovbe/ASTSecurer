@@ -11,7 +11,7 @@ def find_unused_variable(node):
     skip = 0
     list_unused_variable = []
     if isinstance(node, dict):
-        if node.get("type") == "StructDefinition":
+        if node.get("type") == "StructDefinition" or node.get("type") == "EventDefinition":
             skip = 1
         if node.get("type") == "VariableDeclaration":
             var_name = node.get("name")
