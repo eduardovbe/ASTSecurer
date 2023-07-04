@@ -1,5 +1,7 @@
 # ASTSecurer - Detecção de Vulnerabilidades em Contratos Inteligentes em Solidity
 
+![Logo](image/logo.png)
+
 O ASTSecurer é um programa desenvolvido em Python que permite detectar vulnerabilidades em contratos inteligentes escritos em Solidity, através da análise semântica da AST (Abstract Syntax Tree).
 
 ## Funcionalidades
